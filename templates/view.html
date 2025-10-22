@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  <h3>{{ item.name }}</h3>
+  <p><strong>描述：</strong></p>
+  <p>{{ item.description or '无' }}</p>
+  <p><strong>联系人：</strong> {{ item.contact or '无' }}</p>
+  <p><small class="text-muted">创建于 {{ item.created_at.strftime('%Y-%m-%d %H:%M') }}</small></p>
+
+  <form action="{{ url_for('delete_item', item_id=item.id) }}" method="post" onsubmit="return confirm('确认删除该物品？');">
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">返回</a>
+    <button class="btn btn-danger">删除</button>
+  </form>
+{% endblock %}

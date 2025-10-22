@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>物品列表</h3>
+    <form class="d-flex" method="get" action="{{ url_for('index') }}">
+      <input class="form-control me-2" name="q" placeholder="搜索名称/描述/联系人" value="{{ q }}">
+      <button class="btn btn-outline-primary" type="submit">搜索</button>
+    </form>
+  </div>
+
+  {% if not items %}
+    <div class="alert alert-secondary">当前没有物品。你可以点击右上角的“添加物品”发布物品。</div>
+  {% else %}
+    <div class="list-group">
+      {% for it in items %}
+        <div class="list-group-item">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ it.name }}</h5>
+            <small>{{ it.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+          </div>
+          <p class="mb-1">{{ it.description or '-' }}</p>
+          <div class="d-flex justify-content-between">
+            <small>联系人：{{ it.contact or '-' }}</small>
+            <div>
+              <a href="{{ url_for('view_item', item_id=it.id) }}" class="btn btn-sm btn-outline-primary">查看</a>
+              <form action="{{ url_for('delete_item', item_id=it.id) }}" method="post" style="display:inline" onsubmit="return confirm('确认删除该物品？');">
+                <button class="btn btn-sm btn-outline-danger">删除</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}
